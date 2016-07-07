@@ -9,11 +9,9 @@ import (
 )
 
 var (
-	knownFilePathPatterns = []string{
-		"github.com/",
-		"code.google.com/",
-		"bitbucket.org/",
-		"launchpad.net/",
+	knownSrcPrefixes []string = []string{
+		"/src/",
+		"/vendor/",
 	}
 )
 
@@ -62,15 +60,15 @@ func (s Stack) Fingerprint() string {
 //   /usr/local/go/src/pkg/runtime/proc.c -> pkg/runtime/proc.c
 //   /home/foo/go/src/github.com/rollbar/rollbar.go -> github.com/rollbar/rollbar.go
 func shortenFilePath(s string) string {
-	idx := strings.Index(s, "/src/pkg/")
-	if idx != -1 {
-		return s[idx+5:]
-	}
-	for _, pattern := range knownFilePathPatterns {
-		idx = strings.Index(s, pattern)
-		if idx != -1 {
-			return s[idx:]
+	lastIndex := -1
+	for _, prefix := range knownSrcPrefixes {
+		index := strings.LastIndex(s, prefix) + len(prefix)
+		if index > lastIndex {
+			lastIndex = index
 		}
+	}
+	if lastIndex != -1 {
+		return s[lastIndex:]
 	}
 	return s
 }
