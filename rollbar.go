@@ -79,6 +79,9 @@ var (
 	// all items.
 	CodeVersion = ""
 
+	// Server Root is used for determined what code paths are project-local
+	ServerRoot = ""
+
 	bodyChannel chan map[string]interface{}
 	waitGroup   sync.WaitGroup
 	postErrors  chan error
@@ -229,6 +232,7 @@ func buildBody(level, title string) map[string]interface{} {
 		"language":    "go",
 		"server": map[string]interface{}{
 			"host": hostname,
+			"root": ServerRoot,
 		},
 		"notifier": map[string]interface{}{
 			"name":    NAME,
