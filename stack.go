@@ -34,7 +34,7 @@ func BuildStack(skip int) Stack {
 		if !ok {
 			break
 		}
-		file = shortenFilePath(file)
+		file = ShortenFilePath(file)
 		stack = append(stack, Frame{file, functionName(pc), line})
 	}
 
@@ -59,7 +59,7 @@ func (s Stack) Fingerprint() string {
 // Examples:
 //   /usr/local/go/src/pkg/runtime/proc.c -> pkg/runtime/proc.c
 //   /home/foo/go/src/github.com/rollbar/rollbar.go -> github.com/rollbar/rollbar.go
-func shortenFilePath(s string) string {
+func ShortenFilePath(s string) string {
 	lastIndex := -1
 	for _, prefix := range knownSrcPrefixes {
 		index := strings.LastIndex(s, prefix) + len(prefix)

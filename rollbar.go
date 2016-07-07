@@ -256,7 +256,7 @@ func errorBody(err error, stack Stack) (map[string]interface{}, string) {
 		message = err.Error()
 	}
 
-	fingerprint := stack.Fingerprint()
+	fingerprint := stack.Fingerprint() + message
 	errBody := map[string]interface{}{
 		"trace": map[string]interface{}{
 			"frames": stack,
