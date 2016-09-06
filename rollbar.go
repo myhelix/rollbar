@@ -277,7 +277,7 @@ func errorRequest(r *http.Request) map[string]interface{} {
 	return map[string]interface{}{
 		"url":     r.URL.String(),
 		"method":  r.Method,
-		"headers": flattenValues(r.Header),
+		"headers": flattenValues(filterParams(r.Header)),
 
 		// GET params
 		"query_string": url.Values(cleanQuery).Encode(),

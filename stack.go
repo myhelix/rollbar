@@ -67,7 +67,7 @@ func ShortenFilePath(s string) string {
 			lastIndex = index
 		}
 	}
-	if lastIndex != -1 {
+	if lastIndex != -1 && lastIndex < len(s) {
 		return s[lastIndex:]
 	}
 	return s
