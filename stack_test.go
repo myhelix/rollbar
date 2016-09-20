@@ -1,18 +1,21 @@
 package rollbar
 
 import (
+	"regexp"
 	"testing"
 )
 
 func TestBuildStack(t *testing.T) {
 	frame := BuildStack(1)[0]
-	if frame.Filename != "github.com/stvp/rollbar/stack_test.go" {
+	// Work if under a fork of the repo
+	pathRegex := regexp.MustCompile("github.com/[a-z]+/rollbar/stack_test.go")
+	if !pathRegex.MatchString(frame.Filename) {
 		t.Errorf("got: %s", frame.Filename)
 	}
 	if frame.Method != "rollbar.TestBuildStack" {
 		t.Errorf("got: %s", frame.Method)
 	}
-	if frame.Line != 8 {
+	if frame.Line != 9 {
 		t.Errorf("got: %d", frame.Line)
 	}
 }
@@ -62,7 +65,7 @@ func TestShortenFilePath(t *testing.T) {
 		{"/home/foo/go/src/github.com/stvp/rollbar.go", "github.com/stvp/rollbar.go"},
 	}
 	for i, test := range tests {
-		got := shortenFilePath(test.Given)
+		got := ShortenFilePath(test.Given)
 		if got != test.Expected {
 			t.Errorf("tests[%d]: got %s", i, got)
 		}
